@@ -1,0 +1,5 @@
+presentation/blast_presentation_files/
+presentation/env/
+*.html
+*.js
+*.map
