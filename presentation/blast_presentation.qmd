@@ -1,6 +1,6 @@
 ---
 title: Fast and differentiable likelihoods with Blast.jl
-subtitle: Computing the 3x2 pt without the Limber approximation
+subtitle: Based on ArXiv 2410.03632
 format:
     clean-revealjs:
         footer: "Fast and differentiable likelihoods with Blast.jl"
@@ -10,7 +10,7 @@ format:
                 <style>
                     /* shrink all slide text to 85% of the default */
                     .reveal .slides {
-                    font-size: 0.85em !important;
+                    font-size: 0.80em !important;
                     }
 
                     }
@@ -42,227 +42,67 @@ institute: "3x2 pt meeting, Paris"
 
 ##
 
-Computation of the $3\times2\,\mathrm{pt}$ is somewhat expensive
+Computation of the $3\times2\,\mathrm{pt}$ is computationally challenging
 $$
-C_{i j}^{\mathrm{AB}}(\ell)= \iint \chi_1 \mathrm{d} \chi_2 W_i^{\mathrm{A}}\left(\chi_1\right) W_j^{\mathrm{B}}\left(\chi_2\right) \int \mathrm{d} k k^2 P_{\mathrm{AB}}\left(k, \chi_1, \chi_2\right) \frac{j \ell\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right)}{\left(k \chi_1\right)^\alpha\left(k \chi_2\right)^\beta}
+C_{i j}^{\mathrm{AB}}(\ell)= \iint \mathrm{d}\chi_1 \mathrm{d} \chi_2 W_i^{\mathrm{A}}\left(\chi_1\right) W_j^{\mathrm{B}}\left(\chi_2\right) \int \mathrm{d} k k^2 P^{\mathrm{AB}}\left(k, \chi_1, \chi_2\right) \frac{j_\ell\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right)}{\left(k \chi_1\right)^\alpha\left(k \chi_2\right)^\beta}
 $$
 
 :::: {.columns}
 ::: {.column width="50%"}
 Approximations:
 
-- Limber Approximation
-- Second Order Limber
+- Limber Approximation [Limber, 1953](https://ui.adsabs.harvard.edu/abs/1953ApJ...117..134L/abstract)
+- Second Order Limber [Loverde & Ashfordi, 2008](https://arxiv.org/abs/0809.5112)
+- Pecard-Lefshetz [Feldbrugge, 2023](https://arxiv.org/abs/2304.13064)
+- Flat-sky [Gao et al., 2023](https://arxiv.org/abs/2307.13768)
 :::
 
 ::: {.column width="50%"}
 Dedicated codes and algorithms:
 
-- FKEM
-- Levin
-- Matter
-- Flat-sky
+- Angpow [Campagne et al., 2017](https://arxiv.org/abs/1701.03592)
+- Matter [Schöneberg et al., 2018](https://arxiv.org/abs/1807.09540)
+- FKEM [Fang et al., 2019](https://arxiv.org/abs/1911.11947)
+- Levin [Reischke, 2025](https://arxiv.org/abs/2502.12142)
 :::
 ::::
 
-## An interlude: projection effects {}
+##
 
 :::: {.columns}
-::: {.column width="60%"}
-Well known in bayesian analysis: credibility intervals do not have coverage properties, unlike frequentist confidence intervals.
+<div class="column" style="width:35%; line-height:1.1;">
+  <ul>
+    <li class="fragment" data-fragment-index="1" style="margin-bottom: 0;">Improve speed</li>
+    <li class="fragment" data-fragment-index="2" style="margin-bottom: 0;">Increase accuracy</li>
+    <li class="fragment" data-fragment-index="3">Make it autodifferentiable</li>
+  </ul>
+</div>
 
-Marginalized 1D Bayesian intervals do not necessarily contain the MLE/MAP.
-
-See also [Carrilho et al. 2022](https://arxiv.org/abs/2207.14784), [Hadzhiyska et al. 2023](https://arxiv.org/abs/2301.11895), [Holm et al. 2023](https://arxiv.org/abs/2309.04468).
-:::
-
-::: {.column width="40%"}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747794126/damico_bs_pe_it2lwl.png)
-[D'Amico et al., 2022](https://arxiv.org/abs/2206.08327)
-:::
-::::
-
-::: {.notes}
-Speaker notes go here.
-:::
-
-## {auto-animate=true }
-
-::: {style="font-size: 1.5em; color: royalblue;"}
-Using tighter priors
-:::
-- Pro: use knowledge of galaxy-halo connection physics
-- Con: as good as the galaxy-halo connection model employed
-
-[Perform a frequentist analysis]{.fg style="font-size: 1.5em; --col: crimson;"}
-
-- Pro: no prior at all
-- Con: different statistical interpretation of the results
-
-[Choose a better basis]{.fg style="font-size: 1.5em; --col: green;"}
-
-- Pro: bayesian, does not require simulations
-- Con: it does not satisfy the strong likelihood principle
-
-## {auto-animate=true data-background-image="https://res.cloudinary.com/df9pocq2o/image/upload/v1747794126/bkg_anxyvx.png" data-background-size="cover" data-background-opacity="0.3"}
-
-::: {style="font-size: 3em; color: royalblue;"}
-Using tighter priors
-:::
-Based on ArXiv [2409.12937](https://arxiv.org/abs/2409.12937) and [2504.10407](https://arxiv.org/abs/2504.10407)
-
-## { #HIP-recipe}
-
-::: {style="font-size: 2em; color: royalblue;"}
-A recipe to calibrate the EFT prior^[See also [Sullivan et al. 2021](https://arxiv.org/abs/2104.10676), [Zennaro et al. 2022](https://arxiv.org/abs/2110.05408), [Ivanov et al. 2024](https://arxiv.org/abs/2409.10609)]
-:::
-
-:::: {.columns}
-::: {.column width="55%"}
-
-::: {.fragment fragment-index=1}
-- Populate DM-only simulations using an HOD prior
-:::
-::: {.fragment fragment-index=2}
-- Compute EFT-bestfit for each combination of HOD and [cosmological parameters](#HIP-cosmology)
-:::
-::: {.fragment fragment-index=3}
-- Filter points with a $P_{0,\mathrm{loop}}$ bigger than $P_{0,11}$ (perturbative prejudice)
-:::
-
-::: {.fragment fragment-index=4}
-- Train a normalizing flow to be used as a prior
-:::
-
-:::
-
-::: {.column width="45%"}
+::: {.column width="65%"}
 ::: {.r-stack}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747857733/HOD_prior_srp9pq.png){.fragment width="450" height="200"  fragment-index=1}
+::: {.fragment .fade-in-then-out fragment-index=1}
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747969161/N5k_timings_oo0my8.png){width="550" height="300"}
 
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747876436/perturbative_check_p4baiy.png){.fragment width="450" height="450" fragment-index=3}
+[Leonard et al., 2022](https://arxiv.org/abs/2212.04291)
+:::
+::: {.r-stack-item .fragment .fade-in-then-out data-fragment-index="2" }
+\begin{align}
+P_{\operatorname{lin}}(k, z_1, z_2)&\approx P_{\operatorname{lin}}(k, z=0)D(z_1)D(z_2)\\
+C_{ij}^{AB}(\ell)&=N(\ell) \int_0^{\infty} \frac{\mathrm{d} k}{k} k^3 P_{\operatorname{lin}}(k, z=0) I_{i, \ell}^A(k) I_{j, \ell}^B(k)\\
+I_{i, \ell}^a(k)&=\int_0^{\infty} \frac{\mathrm{d} \chi}{\chi} \frac{\chi K_i(\chi) D(\chi)}{(k \chi)^{2 X_i}} j_{\ell}(k \chi)
+\end{align}
+Assume scale independent growth
+:::
 
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747876512/prior_DESI_qjzv7w.png){.fragment width="450" height="450" fragment-index=4}
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747970922/Gradient-fx-and-the-Riemannian-gradient-R-fx-at-point-x-of-some-Riemannian-manifold_nj4abk.jpg){.fragment width="500" height="350" fragment-index=3}
 :::
 :::
 ::::
 
-## {auto-animate=true }
+:::{.fragment fragment-index=4}
+The attempt to improve the previous points led the design of a new algorithm:
 
-::: {style="font-size: 2.0em; color: royalblue;"}
-Using tighter priors
+- Computation of inner $k$-integral with two Bessels
+- Recast the problem with the language of Linear Algebra
+- Written in Julia (but jax version on its way!)
 :::
-
-:::: {.columns}
-::: {.column width="55%"}
-
-::: {.fragment fragment-index="1"}
-Narrower priors calibrated on HODs remove projection effects on PyBird
-<span class="fragment" data-fragment-index="2">and velocileptors synthetic realizations</span>
-<span class="fragment" data-fragment-index="3">and measurements from simulations with different galaxy-halo connection physics</span>
-:::
-
-::: {.fragment fragment-index=4}
-Application to DESI data succesfully removed projection effects in $w_0 w_a$CDM cosmology!
-:::
-
-:::
-
-::: {.column width="45%"}
-::: {.r-stack}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747794127/wcdm_HIP_fit_inwfiz.png){.fragment .fade-in-then-out width="450" height="450"  fragment-index=1}
-
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747879405/velocileptor_smooth_fzug6s.png){.fragment .fade-in-then-out width="450" height="450"  fragment-index=2}
-
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747794127/sham_fit_szgifm.png){.fragment .fade-in-then-out width="450" height="450" fragment-index=3}
-
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747796917/desi_HIP_1_ypepip.png){.fragment .fade-in-then-out width="450" height="450" fragment-index=4}
-
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747879766/w0_wa_HIP_qqcgdv.png){.fragment width="450" height="370" fragment-index=5}
-:::
-:::
-::::
-
-## {auto-animate=true }
-
-::: {style="font-size: 1.5em; color: royalblue;"}
-Using tighter priors
-:::
-- Pro: use knowledge of galaxy-halo connection physics
-- Con: as good as the galaxy-halo connection model employed
-
-::: {style="font-size: 1.5em; color: crimson;"}
-Perform a frequentist analysis
-:::
-
-- Pro: no prior at all
-- Con: different statistical interpretation of the results
-
-[Choose a better basis]{.fg style="font-size: 1.5em;--col: green;"}
-
-- Pro: bayesian, does not required galaxy-halo connection physics
-- Con: it does not satisfy the strong likelihood principle
-
-## {auto-animate=true data-background-image="https://res.cloudinary.com/df9pocq2o/image/upload/v1747794126/bkg_anxyvx.png" data-background-size="cover" data-background-opacity="0.3"}
-
-::: {style="margin-top: 100px; font-size: 2em; color: crimson;"}
-Perform a frequentist analysis
-:::
-
-## {auto-animate=true }
-
-::: {style="font-size: 1.5em; color: crimson;"}
-Perform a frequentist analysis
-:::
-
-:::: {.columns}
-::: {.column width="55%" .fragment fragment-index=1}
-Rather than spending time calibrating a better prior, just get rid of that.
-
-::: {.fragment fragment-index="2"}
-Almost no projections in $\Lambda$CDM,
-<span class="fragment" data-fragment-index="3">while significant ones in $w_0 w_a$CDM cosmology!</span>
-<span class="fragment" data-fragment-index="4">Frequentist results are qualitatively compatible with the HIP ones.</span>
-:::
-
-:::
-
-::: {.column width="45%" .fragment fragment-index=2}
-::: {.r-stack}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747795899/LCDM_profiles_klectz.png){.fragment .fade-in-then-out fragment-index=2}
-
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747798584/w0wacdm_profiles_ovvuoz.png){.fragment .fade-in-then-out width="450" height="450" fragment-index=3}
-
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747795899/2D_profiles_dp6txt.png){.fragment .fade-in width="400" height="550"  fragment-index=4}
-:::
-:::
-::::
-
-
-## { #HIP-cosmology}
-
-::: {style="font-size: 1.5em; color: royalblue;"}
-[The HOD Informed Prior cosmological dependency](#HIP-recipe)
-:::
-:::: {.columns}
-::: {.column width="55%"}
-
-::: {.fragment fragment-index="1"}
-A natural question about our methodology: is there any cosmological dependency within the HIP we have to take care of?
-In order to study this issue, we used a suite of 30 Abacus simulations and populated them with an HOD
-:::
-
-::: {.fragment fragment-index=2}
-Here we show the median and 68% of the EFT parameters for each considered cosmology. The cosmological dependency is mild but non-zero. We account for that by stacking all considered cosmologies together.
-:::
-
-:::
-
-::: {.column width="45%"}
-::: {.r-stack}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747877440/abacus_simulations_kjdlja.png){.fragment .fade-in-then-out width="450" height="450"  fragment-index=1}
-
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747877532/single_cosmology_prior_agmdwq.png){.fragment width="350" height="450" fragment-index=2}
-:::
-:::
-::::
