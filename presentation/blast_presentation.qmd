@@ -98,7 +98,7 @@ Assumes scale independent growth!
 
 
 :::{.r-stack-item .fragment fragment-index=4}
-The attempt to improve the previous points led the design of a new algorithm:
+The attempt to address the previous points led the design of a new algorithm:
 
 - Computation of inner $k$-integral with two Bessels
 - Recast the problem with the language of Linear Algebra
