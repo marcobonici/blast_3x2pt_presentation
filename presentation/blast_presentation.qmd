@@ -37,7 +37,7 @@ author:
     email: marco.bonici@uwaterloo.ca
     affiliations: Waterloo Centre for Astrophysics
 date: last-modified
-institute: "3x2 pt meeting, Paris"
+institute: "$3 \\times 2$ pt meeting, Paris"
 ---
 
 ##
@@ -67,10 +67,12 @@ Dedicated codes and algorithms:
 :::
 ::::
 
+The LSST N5K challenge ([Leonard et al., 2022](https://arxiv.org/abs/2212.04291)) made a very nice comparison of these algorithms.
+
 ## Why another algorithm then?
 
 :::: {.columns}
-<div class="column" style="width:35%; transform:translateY(+90%);line-height:1.1;">
+<div class="column" style="width:40%; transform:translateY(+90%);line-height:1.1;">
   <ul>
     <li class="fragment" data-fragment-index="1" style="margin-bottom: 0;">Improve speed</li>
     <li class="fragment" data-fragment-index="2" style="margin-bottom: 0;">Increase accuracy</li>
@@ -78,7 +80,7 @@ Dedicated codes and algorithms:
   </ul>
 </div>
 
-::: {.column width="65%"}
+::: {.column width="60%"}
 ::: {.r-stack}
 ::: {.fragment .fade-in-then-out fragment-index=1}
 ![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747969161/N5k_timings_oo0my8.png){width="550" height="300"}
@@ -91,7 +93,7 @@ P_{\operatorname{lin}}(k, z_1, z_2)&\approx P_{\operatorname{lin}}(k, z=0)D(z_1)
 C_{ij}^{AB}(\ell)&=N(\ell) \int_0^{\infty} \frac{\mathrm{d} k}{k} k^3 P_{\operatorname{lin}}(k, z=0) I_{i, \ell}^A(k) I_{j, \ell}^B(k)\\
 I_{i, \ell}^a(k)&=\int_0^{\infty} \frac{\mathrm{d} \chi}{\chi} \frac{\chi K_i(\chi) D(\chi)}{(k \chi)^{2 X_i}} j_{\ell}(k \chi)
 \end{align}
-Assumes scale independent growth!
+Some codes assume scale independent growth!
 :::
 
 ![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747970922/Gradient-fx-and-the-Riemannian-gradient-R-fx-at-point-x-of-some-Riemannian-manifold_nj4abk.jpg){.fragment width="500" height="350" fragment-index=3 .fade-in-then-out}
@@ -100,10 +102,126 @@ Assumes scale independent growth!
 :::{.r-stack-item .fragment fragment-index=4}
 The attempt to address the previous points led the design of a new algorithm:
 
-- Computation of inner $k$-integral with two Bessels
 - Recast the problem with the language of Linear Algebra
+- Computation of inner $k$-integral with two Bessels
 - Written in Julia (but jax version on its way!)
 :::
 :::
+:::
+::::
+
+## Our computational work-horse: Chebyshev polynomials
+
+:::: {.columns}
+::: {.column width="60%"}
+The main idea is to use Chebyshev polynomials to expand the $P(k)$
+\begin{equation}
+P\left(k, \chi_1, \chi_2 ; \theta\right) \approx \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2 ; \theta\right) T_n(k)
+\end{equation}
+This decomposition is computed with an FFT and is highly accurate
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748004178/PK_cheb_twcp45.png){width="500" height="250"}
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748004069/PK_residuals_o1q1se.png){width="500" height="100"}
+
+:::
+
+::: {.column width="40%"}
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748003256/chiarenza_mugshot_hcf0q3.png)
+:::
+::::
+
+## Our algorithm workflow
+
+:::: {.columns}
+The equations
+
+::: {.column width="50%"}
+<div style="font-size:0.60em;">
+\begin{align}
+w_{\ell}\left(\chi_1, \chi_2; \theta\right)&=\int d k\, k^2 P(k, \chi_1, \chi_2; \theta ) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right)\\
+&\approx\sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \int d k\, k^2 T_n(k) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right) \\
+&= \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \tilde{T}_n(k)
+\end{align}
+
+\begin{align}
+C_{i j}^{AB}(\ell)=\int \mathrm{d} \chi_1 W_i^A\left(\chi_1\right) \int \mathrm{d} \chi_2 W_j^B\left(\chi_2\right)w_{\ell}\left(\chi_1, \chi_2\right)
+\end{align}
+</div>
+:::
+
+::: {.column width="50%" style="margin-top:-3.0em;"}
+The code
+
+```{.julia code-line-numbers="|2|3|4-5|"}
+#After computing spectra and windows
+c = FFT_plan * Pk
+w[i,j,k] = c[j,k,l] * T[i,j,k,l]
+w_R = get_clencurt_weights_R_integration(2*nR+1)
+Cℓ[l,i,j] = χz[n]*K[i,j,n,m]*w[l,n,m]*w_χ[n]*w_R[m]*Δχ
+```
+:::
+::::
+
+The workflow is:
+
+- Compute the coefficients with an FFT
+- Compute the $w_\ell(\chi_1, \chi_2)$ with a tensor contraction
+- Compute the $C_\ell$ with a tensor contraction
+
+## Blast.jl: accuracy
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748039066/blast_accuracy_yjxtai.png)
+
+## Blast.jl: timings
+:::: {.columns}
+::: {.column width="70%"}
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748039281/blast_timings_qbujuu.png)
+:::
+
+::: {.column width="30%"}
+Blast.jl is faster and has a better scaling with the number of threads.
+
+P.S. New implementation of pylevin ([Reischke, 2025](https://arxiv.org/abs/2502.12142)) brings its runtime within a factor of 2 from FKEM
+:::
+::::
+
+
+## Blast.jl: timings breakdown
+
+:::: {.columns}
+::: {.column width="70%"}
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748039346/blast_timings_breakdown_vmdrmn.png)
+:::
+
+::: {.fragment .fade-in fragment-index=1}
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748039781/number_bins_p6umdw.png)
+:::
+:::
+:::
+
+::: {.column width="30%"}
+The main contributions do not depend on the number of bins!
+
+Blast.jl can be extremely advantegeous in the case several bins/observables are considered!
+:::
+::::
+
+## Extending Blast.jl
+
+:::: {.columns}
+::: {.column width="50%"}
+Currently working on extending Blast.jl (in collaboration with S. Camera and G. Fabbian):
+
+- Inclusion of RSD, IA, MB, and other relevant effects for 3x2pt analysis
+- Inclusion of CMB Lensing and cross correlation
+- Ongoing validation with CAMB (residuals within 0.2%) and pylevin (being performed right now)
+- Inclusion of AD rules for efficient gradients
+:::
+
+::: {.column width="35%"}
+
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748041551/gg_CAMB_v37mrz.png)
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748041556/gk_CAMB_vrjzed.png)
+
 :::
 ::::
