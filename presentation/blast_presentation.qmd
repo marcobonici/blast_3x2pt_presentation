@@ -67,10 +67,10 @@ Dedicated codes and algorithms:
 :::
 ::::
 
-##
+## Why another algorithm then?
 
 :::: {.columns}
-<div class="column" style="width:35%; line-height:1.1;">
+<div class="column" style="width:35%; transform:translateY(+90%);line-height:1.1;">
   <ul>
     <li class="fragment" data-fragment-index="1" style="margin-bottom: 0;">Improve speed</li>
     <li class="fragment" data-fragment-index="2" style="margin-bottom: 0;">Increase accuracy</li>
@@ -91,18 +91,19 @@ P_{\operatorname{lin}}(k, z_1, z_2)&\approx P_{\operatorname{lin}}(k, z=0)D(z_1)
 C_{ij}^{AB}(\ell)&=N(\ell) \int_0^{\infty} \frac{\mathrm{d} k}{k} k^3 P_{\operatorname{lin}}(k, z=0) I_{i, \ell}^A(k) I_{j, \ell}^B(k)\\
 I_{i, \ell}^a(k)&=\int_0^{\infty} \frac{\mathrm{d} \chi}{\chi} \frac{\chi K_i(\chi) D(\chi)}{(k \chi)^{2 X_i}} j_{\ell}(k \chi)
 \end{align}
-Assume scale independent growth
+Assumes scale independent growth!
 :::
 
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747970922/Gradient-fx-and-the-Riemannian-gradient-R-fx-at-point-x-of-some-Riemannian-manifold_nj4abk.jpg){.fragment width="500" height="350" fragment-index=3}
-:::
-:::
-::::
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747970922/Gradient-fx-and-the-Riemannian-gradient-R-fx-at-point-x-of-some-Riemannian-manifold_nj4abk.jpg){.fragment width="500" height="350" fragment-index=3 .fade-in-then-out}
 
-:::{.fragment fragment-index=4}
+
+:::{.r-stack-item .fragment fragment-index=4}
 The attempt to improve the previous points led the design of a new algorithm:
 
 - Computation of inner $k$-integral with two Bessels
 - Recast the problem with the language of Linear Algebra
 - Written in Julia (but jax version on its way!)
 :::
+:::
+:::
+::::
