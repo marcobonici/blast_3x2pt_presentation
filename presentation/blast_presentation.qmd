@@ -113,19 +113,17 @@ The attempt to address the previous points led the design of a new algorithm:
 ## Our computational work-horse: Chebyshev polynomials
 
 :::: {.columns}
-::: {.column width="60%"}
+::: {.column width="50%"}
 The main idea is to use Chebyshev polynomials to expand the $P(k)$
 \begin{equation}
 P\left(k, \chi_1, \chi_2 ; \theta\right) \approx \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2 ; \theta\right) T_n(k)
 \end{equation}
-This decomposition is computed with an FFT and is highly accurate
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748004178/PK_cheb_twcp45.png){width="500" height="250"}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748004069/PK_residuals_o1q1se.png){width="500" height="100"}
+This decomposition is computed with an FFT and is highly accurate (almost floating point with a 128-degree polynomial)
 
 :::
 
-::: {.column width="40%"}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748003256/chiarenza_mugshot_hcf0q3.png)
+::: {.column width="50%"}
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748055576/Pk_cheb_rl8ps1.png)
 :::
 ::::
 
