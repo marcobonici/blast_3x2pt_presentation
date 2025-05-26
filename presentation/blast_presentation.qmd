@@ -44,7 +44,7 @@ institute: "$3 \\times 2\\,\\mathrm{pt}$ meeting, Paris"
 ## A challenging computation
 
 $$
-C_{i j}^{\mathrm{AB}}(\ell)= \iint \mathrm{d}\chi_1 \mathrm{d} \chi_2 W_i^{\mathrm{A}}\left(\chi_1\right) W_j^{\mathrm{B}}\left(\chi_2\right) \int \mathrm{d} k k^2 P^{\mathrm{AB}}\left(k, \chi_1, \chi_2\right) \frac{j_\ell\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right)}{\left(k \chi_1\right)^\alpha\left(k \chi_2\right)^\beta}
+C_{i j}^{\mathrm{AB}}(\ell)= \iint \mathrm{d}\chi_1 \mathrm{d} \chi_2 W_i^{\mathrm{A}}\left(\chi_1\right) W_j^{\mathrm{B}}\left(\chi_2\right) \int \mathrm{d} k\, k^2 P^{\mathrm{AB}}\left(k, \chi_1, \chi_2\right) \frac{j_\ell\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right)}{\left(k \chi_1\right)^\alpha\left(k \chi_2\right)^\beta}
 $$
 
 :::: {.columns}
@@ -77,7 +77,7 @@ Go short. Just say there is a rich literature on this computation and a recent n
 
 :::: {.columns}
 <div class="column" style="width:40%; transform:translateY(+38%);line-height:1.1;">
-  <p>There are a few points we wanted to improve</p>
+  <p>There are a few aspects we wanted to improve</p>
   <ul>
     <li class="fragment" data-fragment-index="1" style="margin-bottom: 16px;">Speed</li>
     <li class="fragment" data-fragment-index="2" style="margin-bottom: 16px;">Accuracy</li>
@@ -96,18 +96,18 @@ Go short. Just say there is a rich literature on this computation and a recent n
 \begin{equation}
 P_{\operatorname{lin}}(k, z_1, z_2)\approx P_{\operatorname{lin}}(k, z=0)D(z_1)D(z_2)
 \end{equation}
-Some codes assume scale independent growth!
+Some codes assume scale independent growth
 :::
 
 ![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747970922/Gradient-fx-and-the-Riemannian-gradient-R-fx-at-point-x-of-some-Riemannian-manifold_nj4abk.jpg){.fragment width="500" height="350" fragment-index=3 .fade-in-then-out}
 
 
 :::{.r-stack-item .fragment fragment-index=4}
-The attempt to address the previous points led the design of a new algorithm:
+Addressing the previous points led the design of a new algorithm
 
 - Massive usage of Linear Algebra
 - Computation of inner $k$-integral with two Bessels
-- Written in Julia (but jax version on its way!)
+- Written in Julia (and jax version on its way!)
 :::
 :::
 :::
@@ -124,7 +124,7 @@ P\left(k, \chi_1, \chi_2 ; \theta\right) \approx \sum_{n=0}^{N_{\max }} c_n\left
 
 Decomposition is efficiently performed with an FFT
 
-Leverage the decomposition
+[Leverage the decomposition]{.fragment .fade-in fragment-index=1}
 
 :::
 
@@ -135,27 +135,25 @@ Leverage the decomposition
 
 \begin{align}
 w_{\ell}\left(\chi_1, \chi_2; \theta\right)&=\int d k\, k^2 P(k, \chi_1, \chi_2; \theta ) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right)\\
-&\approx\sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \int d k\, k^2 T_n(k) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right) = \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \tilde{T}_n(k)
+&\approx\sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \int d k\, k^2 T_n(k) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right) \equiv \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \tilde{T}_n(k)
 \end{align}
 
-. . .
-
-::: {.absolute top="72%" left="12%" width="33px"}
+::: {.absolute top="72%" left="12%" width="33px" .fragment .fade-in fragment-index=1}
 :::  {.box style="--box-height: 19px; --box-color: royalblue;"}
 :::
 :::
 
-::: {.absolute top="72%" left="40.5%" width="33px"}
+::: {.absolute top="72%" left="40.5%" width="33px" .fragment .fade-in fragment-index=1}
 :::  {.box style="--box-height: 19px; --box-color: royalblue;"}
 :::
 :::
 
-::: {.absolute top="83.5%" left="34.9%" width="33px"}
+::: {.absolute top="83.5%" left="34.9%" width="33px" .fragment .fade-in fragment-index=1}
 :::  {.box style="--box-height: 19px; --box-color: royalblue;"}
 :::
 :::
 
-::: {.absolute top="83.5%" left="91%" width="33px"}
+::: {.absolute top="83.5%" left="91%" width="33px" .fragment .fade-in fragment-index=1}
 :::  {.box style="--box-height: 19px; --box-color: royalblue;"}
 :::
 :::
@@ -172,7 +170,7 @@ The equations
 ::: {.column width="50%"}
 <div style="font-size:0.7em;">
 \begin{equation}
-w_{\ell}\left(\chi_1, \chi_2; \theta\right)= \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \tilde{T}_n(k)
+w_{\ell}\left(\chi_1, \chi_2; \theta\right) \approx \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \tilde{T}_n(k)
 \end{equation}
 
 \begin{align}
@@ -197,8 +195,8 @@ Cℓ[l,i,j] = χz[n]*K[i,j,n,m]*w[l,n,m]*w_χ[n]*w_R[m]*Δχ
 The workflow is:
 
 - Compute the coefficients with an FFT
-- Compute the $w_\ell(\chi_1, \chi_2)$ with a tensor contraction
-- Compute the $C_\ell$ with a tensor contraction
+- Compute the $w_\ell(\chi_1, \chi_2)$'s with a tensor contraction
+- Compute the $C_\ell$'s with a tensor contraction
 
 ## Blast.jl: accuracy
 ![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748039066/blast_accuracy_yjxtai.png)
@@ -210,7 +208,7 @@ The workflow is:
 :::
 
 <div class="column" style="width:30%; transform:translateY(+35%);line-height:1.1;">
-  <p>Blast.jl is faster and has a better scaling with the number of threads.</p>
+  <p>Blast.jl is faster and has a better scaling^[All codes have been benchmarked on the same hardware, a node on the Narval cluster (Canada).] with the number of threads.</p>
   <p>P.S. New implementation of pylevin ([Reischke, 2025](https://arxiv.org/abs/2502.12142)) brings its runtime within a factor of 2 from FKEM</p>
 </div>
 
@@ -238,11 +236,21 @@ The workflow is:
 
 <div class="column" style="width:30%; transform:translateY(+50%);line-height:1.1;">
   <p>The main contributions do not depend on the number of bins!</p>
-  <p>Advantageous when several bins/observables are considered!</p>
+  <p class="fragment" data-fragment-index="1">Timings independent on the number of bins</p>
 </div>
 
 
 ::::
+
+::: {.absolute top="63.1%" left="10%" width="570px"}
+:::  {.box style="--box-height: 19px; --box-color: royalblue;" .fragment .fade-in fragment-index=1}
+:::
+:::
+
+::: {.absolute top="30.5%" left="52%" width="140px"}
+:::  {.box style="--box-height: 60px; --box-color: royalblue;" .fragment .fade-out fragment-index=1}
+:::
+:::
 
 ## Extending Blast.jl
 
@@ -274,7 +282,7 @@ Currently working on extending Blast.jl (in collaboration with S. Camera and G. 
 
 | Code                         | Hardware | Beyond Limber | Contributions | Gradient timing |
 |------------------------------|----------|-----------------|---------------|---------------|
-| jaxcosmo+Cosmopower-Jax, [Campagne et al., 2023](jjj), [Piras et al., 2025](kkk)      | A100 80 GB GPU   | No      | WL, IA, GC     | 15 s       |
+| jaxcosmo+Cosmopower-Jax^[Cosmopower-Jax is emulating the $P(k)$, while jaxcosmo is computing the $3\times2\,\mathrm{pt}$.], [Campagne et al., 2023](jjj), [Piras et al., 2025](kkk)      | A100 80 GB GPU   | No      | WL, IA, GC     | 15 s       |
 | LimberJack.jl, [Ruiz-Zapatero et al., 2023](ddd)                     | 16 Core CPU   | No     | WL, IA, GC, MB, CMB L       | 0.075 s      |
 | Blast.jl, [Chiarenza et al., 2025](ujn)                     | 16 Core CPU   | Yes       | WL, IA, GC, MB, RSD, CMB L       | 0.045 s    |
 
@@ -291,8 +299,8 @@ What we have achieved so far:
 - Inclusion of additional effects and validation with external codes :hourglass_flowing_sand:
 - AD compatibility :hourglass_flowing_sand:
 - Compatibility with Mapse.jl for input Matter Power Spectrum :hourglass_flowing_sand:
-- Jax version and inclusion within cloelib :hourglass_flowing_sand:
-- Inclusion the Bispectrum :hourglass_flowing_sand:
+- Jax translation and implementation within cloelib :hourglass_flowing_sand:
+- Inclusion of the Bispectrum :hourglass_flowing_sand:
 - Inclusion of $\Omega_K\neq0$ :hourglass_flowing_sand:
 :::
 
