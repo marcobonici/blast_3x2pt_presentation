@@ -265,15 +265,8 @@ Currently working on extending Blast.jl (in collaboration with S. Camera and G. 
 :::
 
 ::: {.column width="40%"}
-::: {.r-stack}
-::: {.fragment .fade-out fragment-index=1}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748041551/gg_CAMB_v37mrz.png)
-:::
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748303291/residuals_gg_hgpny2.png)
 
-::: {.fragment .fade-in fragment-index=1}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748041556/gk_CAMB_vrjzed.png)
-:::
-:::
 
 :::
 ::::
