@@ -69,6 +69,10 @@ Dedicated codes and algorithms:
 
 See LSST N5K challenge ([Leonard et al., 2022](https://arxiv.org/abs/2212.04291)) for an algorithm comparison.
 
+::: {.notes}
+Go short. Just say there is a rich literature on this computation and a recent nice review from the LSST collaboration.
+:::
+
 ## Why another algorithm then?
 
 :::: {.columns}
@@ -77,7 +81,7 @@ See LSST N5K challenge ([Leonard et al., 2022](https://arxiv.org/abs/2212.04291)
   <ul>
     <li class="fragment" data-fragment-index="1" style="margin-bottom: 16px;">Speed</li>
     <li class="fragment" data-fragment-index="2" style="margin-bottom: 16px;">Accuracy</li>
-    <li class="fragment" data-fragment-index="3">Autodifferentiable</li>
+    <li class="fragment" data-fragment-index="3">Differentiability</li>
   </ul>
 </div>
 
@@ -134,7 +138,31 @@ w_{\ell}\left(\chi_1, \chi_2; \theta\right)&=\int d k\, k^2 P(k, \chi_1, \chi_2;
 &\approx\sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \int d k\, k^2 T_n(k) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right) = \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \tilde{T}_n(k)
 \end{align}
 
+. . .
 
+::: {.absolute top="72%" left="12%" width="33px"}
+:::  {.box style="--box-height: 19px; --box-color: royalblue;"}
+:::
+:::
+
+::: {.absolute top="72%" left="40.5%" width="33px"}
+:::  {.box style="--box-height: 19px; --box-color: royalblue;"}
+:::
+:::
+
+::: {.absolute top="83.5%" left="34.9%" width="33px"}
+:::  {.box style="--box-height: 19px; --box-color: royalblue;"}
+:::
+:::
+
+::: {.absolute top="83.5%" left="91%" width="33px"}
+:::  {.box style="--box-height: 19px; --box-color: royalblue;"}
+:::
+:::
+
+::: {.notes}
+Emphasize the decoupling of the cosmological dependent part and of the complex integrals
+:::
 
 ## Our algorithm workflow
 
@@ -210,7 +238,7 @@ The workflow is:
 
 <div class="column" style="width:30%; transform:translateY(+50%);line-height:1.1;">
   <p>The main contributions do not depend on the number of bins!</p>
-  <p>Advantegeous when several bins/observables are considered!</p>
+  <p>Advantageous when several bins/observables are considered!</p>
 </div>
 
 
@@ -260,11 +288,12 @@ What we have achieved so far:
 
 - Developed a new Non Limber code for $3\times2$point :white_check_mark:
 - Validated within the N5K challenge :white_check_mark:
-- Inclusion of additional effects and vaidation with external codes :hourglass_flowing_sand:
+- Inclusion of additional effects and validation with external codes :hourglass_flowing_sand:
 - AD compatibility :hourglass_flowing_sand:
 - Compatibility with Mapse.jl for input Matter Power Spectrum :hourglass_flowing_sand:
 - Jax version and inclusion within cloelib :hourglass_flowing_sand:
-- Extension of the algorithm to the Bispectrum :hourglass_flowing_sand:
+- Inclusion the Bispectrum :hourglass_flowing_sand:
+- Inclusion of $\Omega_K\neq0$ :hourglass_flowing_sand:
 :::
 
 ::: {.column width="20%"}

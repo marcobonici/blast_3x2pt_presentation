@@ -338,3 +338,12 @@ $selection-bg: #26351c !default;
 .reveal .columns6040 div.column:not(:first-child) {
     width: 40%;
 }
+
+.box {
+    color: var(--box-color, #000000);
+    background-color: transparent;
+    margin: 1px;
+    padding: 5px 2px 5px 2px;
+    height: var(--box-height, 20px);
+    border: 2px solid;
+}
