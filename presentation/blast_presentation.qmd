@@ -258,7 +258,7 @@ The workflow is:
 ::: {.column width="55%"}
 Currently working on extending Blast.jl (in collaboration with S. Camera and G. Fabbian):
 
-- Inclusion of RSD, IA, MB, and other relevant effects for 3x2pt analysis
+- Inclusion of RSD, IA, MB, and other relevant effects for $3\times2\,\mathrm{pt}$ analysis
 - Inclusion of CMB Lensing and cross correlation
 - Ongoing validation with CAMB (residuals within 0.2%) and pylevin (being performed right now)
 - Inclusion of AD rules for efficient gradients
@@ -294,7 +294,7 @@ Blast.jl is the fastest and most complete of the differentiable $3\times2\,\math
 ::: {.column width="80%"}
 What we have achieved so far:
 
-- Developed a new Non Limber code for $3\times2$point :white_check_mark:
+- Developed a new Non Limber code for $3\times2\,\mathrm{pt}$ :white_check_mark:
 - Validated within the N5K challenge :white_check_mark:
 - Inclusion of additional effects and validation with external codes :hourglass_flowing_sand:
 - AD compatibility :hourglass_flowing_sand:
