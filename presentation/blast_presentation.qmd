@@ -67,7 +67,7 @@ Dedicated codes and algorithms:
 :::
 ::::
 
-See LSST N5K challenge ([Leonard et al., 2022](https://arxiv.org/abs/2212.04291)) for an algorithm comparison.
+See LSST N5K challenge ([Leonard et al., 2022](https://arxiv.org/abs/2212.04291)) for an algorithm comparison
 
 ::: {.notes}
 Go short. Just say there is a rich literature on this computation and a recent nice review from the LSST collaboration.
@@ -139,22 +139,22 @@ w_{\ell}\left(\chi_1, \chi_2; \theta\right)&=\int d k\, k^2 P(k, \chi_1, \chi_2;
 \end{align}
 
 ::: {.absolute top="72%" left="12%" width="33px" .fragment .fade-in fragment-index=1}
-:::  {.box style="--box-height: 19px; --box-color: royalblue;"}
+:::  {.box style="--box-height: 19px;"}
 :::
 :::
 
 ::: {.absolute top="72%" left="40.5%" width="33px" .fragment .fade-in fragment-index=1}
-:::  {.box style="--box-height: 19px; --box-color: royalblue;"}
+:::  {.box style="--box-height: 19px;"}
 :::
 :::
 
 ::: {.absolute top="83.5%" left="34.9%" width="33px" .fragment .fade-in fragment-index=1}
-:::  {.box style="--box-height: 19px; --box-color: royalblue;"}
+:::  {.box style="--box-height: 19px;"}
 :::
 :::
 
 ::: {.absolute top="83.5%" left="91%" width="33px" .fragment .fade-in fragment-index=1}
-:::  {.box style="--box-height: 19px; --box-color: royalblue;"}
+:::  {.box style="--box-height: 19px;"}
 :::
 :::
 
@@ -168,7 +168,7 @@ Emphasize the decoupling of the cosmological dependent part and of the complex i
 The equations
 
 ::: {.column width="50%"}
-<div style="font-size:0.7em;">
+<div style="font-size:0.85em;">
 \begin{equation}
 w_{\ell}\left(\chi_1, \chi_2; \theta\right) \approx \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \tilde{T}_n(k)
 \end{equation}
@@ -182,12 +182,12 @@ C_{i j}^{AB}(\ell)=\iint \mathrm{d} \chi_1 \mathrm{d} \chi_2  W_i^A\left(\chi_1\
 ::: {.column width="50%" style="margin-top:-3.0em;"}
 The code
 
-```{.julia code-line-numbers="|2|3|4-5|"}
+```{.julia code-line-numbers="|2|3|4-5|" style="margin-top:2.2em;"}
 #After computing spectra and windows
 c = FFT_plan * Pk
 w[i,j,k] = c[j,k,l] * T[i,j,k,l]
 w_R = get_clencurt_weights_R_integration(2*nR+1)
-Cℓ[l,i,j] = χz[n]*K[i,j,n,m]*w[l,n,m]*w_χ[n]*w_R[m]*Δχ
+Cℓ[l,i,j] = χ[n]*K[i,j,n,m]*w[l,n,m]*wχ[n]*wR[m]*Δχ
 ```
 :::
 ::::
@@ -197,9 +197,6 @@ The workflow is:
 - Compute the coefficients with an FFT
 - Compute the $w_\ell(\chi_1, \chi_2)$'s with a tensor contraction
 - Compute the $C_\ell$'s with a tensor contraction
-
-## Blast.jl: accuracy
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748039066/blast_accuracy_yjxtai.png)
 
 ## Blast.jl: timings
 :::: {.columns}
@@ -234,7 +231,7 @@ The workflow is:
 :::
 :::
 
-<div class="column" style="width:30%; transform:translateY(+50%);line-height:1.1;">
+<div class="column" style="width:30%; transform:translateY(+62%);line-height:1.1;">
   <p>The main contributions do not depend on the number of bins!</p>
   <p class="fragment" data-fragment-index="1">Timings independent on the number of bins</p>
 </div>
@@ -243,12 +240,12 @@ The workflow is:
 ::::
 
 ::: {.absolute top="63.1%" left="10%" width="570px"}
-:::  {.box style="--box-height: 19px; --box-color: royalblue;" .fragment .fade-in fragment-index=1}
+:::  {.box style="--box-height: 19px;" .fragment .fade-in fragment-index=1}
 :::
 :::
 
 ::: {.absolute top="30.5%" left="52%" width="140px"}
-:::  {.box style="--box-height: 60px; --box-color: royalblue;" .fragment .fade-out fragment-index=1}
+:::  {.box style="--box-height: 60px;" .fragment .fade-out fragment-index=1}
 :::
 :::
 
@@ -279,7 +276,7 @@ Currently working on extending Blast.jl (in collaboration with S. Camera and G. 
 | LimberJack.jl, [Ruiz-Zapatero et al., 2023](ddd)                     | 16 Core CPU   | No     | WL, IA, GC, MB, CMB L       | 0.075 s      |
 | Blast.jl, [Chiarenza et al., 2025](ujn)                     | 16 Core CPU   | Yes       | WL, IA, GC, MB, RSD, CMB L       | 0.045 s    |
 
-Blast.jl is the fastest and most complete of the differentiable $3\times2\,\mathrm{pt}$ codes
+Blast.jl is the fastest and most complete of the differentiable $3\times2\,\mathrm{pt}$ public codes
 
 ## Summarizing
 
@@ -304,3 +301,6 @@ What we have achieved so far:
 
 :::
 ::::
+
+## Blast.jl: accuracy
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748039066/blast_accuracy_yjxtai.png)

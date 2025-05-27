@@ -48,7 +48,7 @@ $selection-bg: #26351c !default;
 .reveal a {
     line-height: 1.5em;
     font-weight: inherit !important;
-    color: royalblue;
+    color: $accent;
 }
 
 .reveal p {
@@ -123,7 +123,7 @@ $selection-bg: #26351c !default;
     // font-weight: 350;
     font-weight: 700;
     font-size: 1.4em;
-    color: royalblue;
+    color: $accent;
 }
 
 .reveal h3 {
@@ -340,7 +340,7 @@ $selection-bg: #26351c !default;
 }
 
 .box {
-    color: var(--box-color, #000000);
+    color: var(--box-color, $accent);
     background-color: transparent;
     margin: 1px;
     padding: 5px 2px 5px 2px;
