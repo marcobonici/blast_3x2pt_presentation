@@ -73,7 +73,7 @@ See LSST N5K challenge ([Leonard et al., 2022](https://arxiv.org/abs/2212.04291)
 Go short. Just say there is a rich literature on this computation and a recent nice review from the LSST collaboration.
 :::
 
-## Why another algorithm then?
+## Why another algorithm then? {#why}
 
 :::: {.columns}
 <div class="column" style="width:40%; transform:translateY(+38%);line-height:1.1;">
@@ -96,7 +96,7 @@ Go short. Just say there is a rich literature on this computation and a recent n
 \begin{equation}
 P_{\operatorname{lin}}(k, z_1, z_2)\approx P_{\operatorname{lin}}(k, z=0)D(z_1)D(z_2)
 \end{equation}
-Some codes assume scale independent growth
+Some codes assume [scale independent growth](#final-thoughts)
 :::
 
 ![](https://res.cloudinary.com/df9pocq2o/image/upload/v1747970922/Gradient-fx-and-the-Riemannian-gradient-R-fx-at-point-x-of-some-Riemannian-manifold_nj4abk.jpg){.fragment width="500" height="350" fragment-index=3 .fade-in-then-out}
@@ -129,31 +129,31 @@ Decomposition is efficiently performed with an FFT
 :::
 
 ::: {.column width="50%"}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748055576/Pk_cheb_rl8ps1.png)
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748374488/Pk_cheb_kmiqhr.png)
 :::
 ::::
 
 \begin{align}
-w_{\ell}\left(\chi_1, \chi_2; \theta\right)&=\int d k\, k^2 P(k, \chi_1, \chi_2; \theta ) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right)\\
-&\approx\sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \int d k\, k^2 T_n(k) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right) \equiv \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \tilde{T}_n(k)
+w_{\ell}\left(\chi_1, \chi_2; \theta\right)&=\int \mathrm{d}k\, k^2 P(k, \chi_1, \chi_2; \theta ) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right)\\
+&\approx\sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \int \mathrm{d}k\, k^2 T_n(k) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right) \equiv \sum_{n=0}^{N_{\max }} c_n\left(\chi_1, \chi_2; \theta\right) \tilde{T}_n(k)
 \end{align}
 
-::: {.absolute top="72%" left="12%" width="33px" .fragment .fade-in fragment-index=1}
+::: {.absolute top="70%" left="12%" width="33px" .fragment .fade-in fragment-index=1}
 :::  {.box style="--box-height: 19px;"}
 :::
 :::
 
-::: {.absolute top="72%" left="40.5%" width="33px" .fragment .fade-in fragment-index=1}
+::: {.absolute top="70%" left="40.5%" width="33px" .fragment .fade-in fragment-index=1}
 :::  {.box style="--box-height: 19px;"}
 :::
 :::
 
-::: {.absolute top="83.5%" left="34.9%" width="33px" .fragment .fade-in fragment-index=1}
+::: {.absolute top="81.5%" left="34.9%" width="33px" .fragment .fade-in fragment-index=1}
 :::  {.box style="--box-height: 19px;"}
 :::
 :::
 
-::: {.absolute top="83.5%" left="91%" width="33px" .fragment .fade-in fragment-index=1}
+::: {.absolute top="81.5%" left="91%" width="33px" .fragment .fade-in fragment-index=1}
 :::  {.box style="--box-height: 19px;"}
 :::
 :::
@@ -174,7 +174,7 @@ w_{\ell}\left(\chi_1, \chi_2; \theta\right) \approx \sum_{n=0}^{N_{\max }} c_n\l
 \end{equation}
 
 \begin{align}
-C_{i j}^{AB}(\ell)=\iint \mathrm{d} \chi_1 \mathrm{d} \chi_2  W_i^A\left(\chi_1\right) W_j^B\left(\chi_2\right)w_{\ell}\left(\chi_1, \chi_2\right)
+C_{i j}^\mathrm{AB}(\ell)=\iint \mathrm{d} \chi_1 \mathrm{d} \chi_2  W_i^A\left(\chi_1\right) W_j^B\left(\chi_2\right)w_{\ell}\left(\chi_1, \chi_2\right)
 \end{align}
 </div>
 :::
@@ -261,10 +261,18 @@ Currently working on extending Blast.jl (in collaboration with S. Camera and G. 
 - Inclusion of AD rules for efficient gradients
 :::
 
+
 ::: {.column width="40%"}
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748303291/residuals_gg_hgpny2.png)
+::: {.r-stack}
+::: {.fragment .fade-out fragment-index=1}
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748374496/contributions_gg_ar2bbi.png)
+:::
 
+::: {.fragment .fade-in fragment-index=1}
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748374501/residuls_gg_ehb019.png)
+:::
 
+:::
 :::
 ::::
 
@@ -304,3 +312,40 @@ What we have achieved so far:
 
 ## Blast.jl: accuracy
 ![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748039066/blast_accuracy_yjxtai.png)
+
+## [On the scale depepdency of $D(z)$](#why) {#final-thoughts}
+
+Solve the $\chi$-integrals with one Bessel
+
+\begin{equation}
+C_{ij}^{\mathrm{AB}}(\ell)=\int_0^{\infty} \frac{\mathrm{d} k}{k} k^3 P^{\mathrm{AB}}_{\operatorname{lin}}(k, z=0) I^\mathrm{A}_{i, \ell}(k) I^\mathrm{B}_{j, \ell}(k)
+\end{equation}
+
+\begin{equation}
+I_{i, \ell}^\mathrm{A}(k)=\int_0^{\infty} \frac{\mathrm{d} \chi}{\chi} \frac{\chi K_i^\mathrm{A}(\chi) D(\chi)}{(k \chi)^{2 X_i}} j_{\ell}(k \chi)
+\end{equation}
+
+Solving the $k$-integral with two Bessels
+
+\begin{equation}
+C_{i j}^\mathrm{AB}(\ell)=\iint \mathrm{d} \chi_1 \mathrm{d} \chi_2  W_i^\mathrm{A}\left(\chi_1\right) W_j^\mathrm{B}\left(\chi_2\right)w^\mathrm{AB}_{\ell}\left(\chi_1, \chi_2\right)
+\end{equation}
+
+\begin{equation}
+w^\mathrm{AB}_{\ell}\left(\chi_1, \chi_2 \right)=\int \mathrm{d}k\, k^2 P^\mathrm{AB}\left(k, \chi_1, \chi_2 \right) j_{\ell}\left(k \chi_1\right) j_{\ell}\left(k \chi_2\right)
+\end{equation}
+
+::: {.absolute top="22.6%" left="46.8%" width="174px"}
+:::  {.box style="--box-height: 23px;"}
+:::
+:::
+
+::: {.absolute top="34.7%" left="58.0%" width="68px"}
+:::  {.box style="--box-height: 23px;"}
+:::
+:::
+
+::: {.absolute top="74.6%" left="45.7%" width="183px"}
+:::  {.box style="--box-height: 23px;"}
+:::
+:::
