@@ -37,7 +37,7 @@ author:
     orcid: 0000-0002-8430-126X
     email: marco.bonici@uwaterloo.ca
     affiliations: Waterloo Centre for Astrophysics
-date: last-modified
+date: May 28, 2025
 institute: "$3 \\times 2\\,\\mathrm{pt}$ meeting, Paris"
 ---
 
@@ -280,9 +280,9 @@ Currently working on extending Blast.jl (in collaboration with S. Camera and G. 
 
 | Code                         | Hardware | Beyond Limber | Contributions | Gradient timing |
 |------------------------------|----------|-----------------|---------------|---------------|
-| jaxcosmo+Cosmopower-Jax^[Cosmopower-Jax is emulating the $P(k)$, while jaxcosmo is computing the $3\times2\,\mathrm{pt}$.], [Campagne et al., 2023](jjj), [Piras et al., 2025](kkk)      | A100 80 GB GPU   | No      | WL, IA, GC     | 15 s       |
-| LimberJack.jl, [Ruiz-Zapatero et al., 2023](ddd)                     | 16 Core CPU   | No     | WL, IA, GC, MB, CMB L       | 0.075 s      |
-| Blast.jl, [Chiarenza et al., 2025](ujn)                     | 16 Core CPU   | Yes       | WL, IA, GC, MB, RSD, CMB L       | 0.045 s    |
+| jaxcosmo+Cosmopower-Jax^[Cosmopower-Jax is emulating the $P(k)$, while jaxcosmo is computing the $3\times2\,\mathrm{pt}$.], [Campagne et al., 2023](https://arxiv.org/abs/2302.05163), [Piras et al., 2025](https://arxiv.org/abs/2405.12965)      | A100 80 GB GPU   | No      | WL, IA, GC     | 15 s       |
+| LimberJack.jl, [Ruiz-Zapatero et al., 2023](https://arxiv.org/abs/2310.08306)                     | 16 Core CPU   | No     | WL, IA, GC, MB, CMB L       | 0.075 s      |
+| Blast.jl, [Chiarenza et al., 2025](https://arxiv.org/abs/2410.03632v1)                     | 16 Core CPU   | Yes       | WL, IA, GC, MB, RSD, CMB L       | 0.045 s    |
 
 Blast.jl is the fastest and most complete of the differentiable $3\times2\,\mathrm{pt}$ public codes
 
@@ -302,10 +302,10 @@ What we have achieved so far:
 - Inclusion of $\Omega_K\neq0$ :hourglass_flowing_sand:
 :::
 
-::: {.column width="20%"}
+::: {.column width="16%"}
 
 ![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748136237/383757137-dc268ab5-7ff8-40f1-bc37-9d3a1f356d99_roawqe.png)
-![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748142629/Julia_Programming_Language_Logo.svg_r4s4l4.png)
+![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748440811/qrcode_211852472_d32596cdae98d8fe2a0ce0993985d8f9_zdzdhq.png)
 
 :::
 ::::
@@ -313,7 +313,7 @@ What we have achieved so far:
 ## Blast.jl: accuracy
 ![](https://res.cloudinary.com/df9pocq2o/image/upload/v1748039066/blast_accuracy_yjxtai.png)
 
-## [On the scale depepdency of $D(z)$](#why) {#final-thoughts}
+## [On the scale dependency of $D(z)$](#why) {#final-thoughts}
 
 Solve the $\chi$-integrals with one Bessel
 
